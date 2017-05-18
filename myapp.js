@@ -14,8 +14,16 @@ skycons.add("day3", Skycons.RAIN);
 skycons.play();
 // update a icon on canvas by its id
 
-//select city
-
+function GetUrlSucess(url){
+  $.getJSON(url,function(data){
+    if(data.query.results){
+      return(data);
+    }
+    else {
+      GetUrlSucess(url);
+    }
+  })
+};
 
 //show taipei's weather
 showData(getData('taipei'));
@@ -66,6 +74,9 @@ function showData(end){
         case 21:
         case 22:
         skycons.set("today",Skycons.FOG);
+        break;
+        default:
+        skycons.set("today",Skycons.CLOUDY);
         break;
       }
 
@@ -141,6 +152,9 @@ function getforecast(forecast){
     case 22:
       return Skycons.FOG;
       break;
+    default:
+      return Skycons.CLOUDY;
+      break;
     }
     }
 });
@@ -161,4 +175,5 @@ $('#dropdown li a').each(function () {
     var city = $(this).text();
     $('#city').text(city);
     showData(getData(city));
+    GetUrlSucess(getUrl(cityName));
     });
